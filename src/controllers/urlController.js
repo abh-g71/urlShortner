@@ -90,7 +90,11 @@ const redirectUrl = async (req, res) => {
           timestamp: new Date().toISOString(),
           ip: req.ip,
           userAgent: req.get("User-Agent"),
-        });
+        },
+        {
+          attempts: 3,
+        }
+      );
       } catch (err) {
         console.error("Click queue error:", err);
       }
@@ -115,7 +119,10 @@ const redirectUrl = async (req, res) => {
         timestamp: new Date().toISOString(),
         ip: req.ip,
         userAgent: req.get("User-Agent"),
-      });
+      },
+    {
+      attempts: 3,
+    });
     } catch (err) {
       console.error("Click queue error:", err);
     }
