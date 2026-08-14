@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const createUrlLimiter = require("../middlewares/rateLimiter");
 
 
 
@@ -11,7 +12,7 @@ const {
 } = require('../controllers/urlController');
 
 // Define the route
-router.post('/shorten', createShortUrl);
+router.post('/shorten',createUrlLimiter, createShortUrl);
 
 router.get('/analytics/:shortCode', getAnalytics);
 
