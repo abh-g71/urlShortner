@@ -1,24 +1,18 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const createUrlLimiter = require("../middlewares/rateLimiter");
 
-
-
-// Import the controller
 const {
   createShortUrl,
   redirectUrl,
-  getAnalytics
-} = require('../controllers/urlController');
+  getAnalytics,
+} = require("../controllers/urlController");
 
-// Define the route
-router.post('/shorten',createUrlLimiter, createShortUrl);
+const createUrlLimiter = require("../middlewares/rateLimiter");
 
-router.get('/analytics/:shortCode', getAnalytics);
+router.post("/shorten", createUrlLimiter, createShortUrl);
 
-router.get('/:shortCode', redirectUrl);
+router.get("/:shortCode", redirectUrl);
 
+router.get("/analytics/:shortCode", getAnalytics);
 
-
-// Export the router
 module.exports = router;
