@@ -2,6 +2,7 @@ const Url = require("../models/Url");
 const Click = require("../models/Click");
 const { nanoid } = require("nanoid");
 const redisClient = require("../config/redis");
+const { randomUUID } = require("crypto");
 
 const clickQueue = require("../queues/clickQueue");
 
@@ -85,7 +86,10 @@ const redirectUrl = async (req, res) => {
     // 2. Cache HIT
     if (cachedUrl) {
       try {
+        const clickId = randomUUID();
+
         await clickQueue.add("click", {
+          clickId,
           shortCode,
           timestamp: new Date().toISOString(),
           ip: req.ip,
@@ -114,7 +118,10 @@ const redirectUrl = async (req, res) => {
 
     // 4. Add analytics job
     try {
+      const clickId = randomUUID();
+
       await clickQueue.add("click", {
+        clickId,
         shortCode,
         timestamp: new Date().toISOString(),
         ip: req.ip,

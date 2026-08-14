@@ -12,7 +12,14 @@ const startWorker = async () => {
     async (job) => {
       console.log("Processing click:", job.data);
 
-      await Click.create(job.data);
+      await Click.findOneAndUpdate(
+        { clickId: job.data.clickId },
+        { $setOnInsert: job.data },
+        {
+          upsert: true,
+          
+        }
+      );
 
       console.log("Click saved to MongoDB");
     },
